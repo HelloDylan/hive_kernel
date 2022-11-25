@@ -91,20 +91,20 @@ class HiveKernel(Kernel):
                             self.output("Connection failed, The hive address cannot have two '@'.")
                         else:
                             self.engine = sa.create_engine(f'{v}')
-                    elif l.startswith('set '):
-                        pd.io.sql.execute(v, con=self.engine)
-                    elif l.startswith('create database '):
-                        pd.io.sql.execute(v, con=self.engine)
-                    elif l.startswith('create schema '):
-                        pd.io.sql.execute(v, con=self.engine)
-                    elif l.startswith('drop database '):
-                        pd.io.sql.execute(v, con=self.engine)
-                    elif l.startswith('drop schema '):
-                        pd.io.sql.execute(v, con=self.engine)
-                    elif l.startswith('drop table '):
-                        pd.io.sql.execute(v, con=self.engine)
-                    elif l.startswith('alter table '):
-                        pd.io.sql.execute(v, con=self.engine)
+                    # elif l.startswith('set '):
+                    #     pd.io.sql.execute(v, con=self.engine)
+                    # elif l.startswith('create database '):
+                    #     pd.io.sql.execute(v, con=self.engine)
+                    # elif l.startswith('create schema '):
+                    #     pd.io.sql.execute(v, con=self.engine)
+                    # elif l.startswith('drop database '):
+                    #     pd.io.sql.execute(v, con=self.engine)
+                    # elif l.startswith('drop schema '):
+                    #     pd.io.sql.execute(v, con=self.engine)
+                    # elif l.startswith('drop table '):
+                    #     pd.io.sql.execute(v, con=self.engine)
+                    # elif l.startswith('alter table '):
+                    #     pd.io.sql.execute(v, con=self.engine)
                     elif l.startswith('help'):
                         self.output_help()
                     else:
@@ -116,7 +116,8 @@ class HiveKernel(Kernel):
                             if l.startswith('select ') and ' limit ' not in l:
                                 output = pd.read_sql(f'{v} limit 1000', self.engine).to_html()
                             else:
-                                output = pd.read_sql(v, self.engine).to_html()
+                                pd.io.sql.execute(v, con=self.engine)
+                                output = "Sql execute success! "
                         else:
                             output = 'Unable to connect to Hive server. Check that the server is running.'
             self.output(output)
